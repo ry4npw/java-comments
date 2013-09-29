@@ -13,6 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- dependency versions -->
+		<aspectj.version>1.7.3</aspectj.version>
+		<commons-lang3.version>3.1</commons-lang3.version>
 		<hibernate.version>4.2.6.Final</hibernate.version>
 		<hsqldb.version>2.3.0</hsqldb.version>
 		<jackson-databind.version>2.2.3</jackson-databind.version>
@@ -24,6 +26,7 @@
 		<spring.version>3.2.4.RELEASE</spring.version>
 		<spring-data-jpa.version>1.4.1.RELEASE</spring-data-jpa.version>
 		<spring-security.version>3.2.0.CI-SNAPSHOT</spring-security.version>
+		<wink.version>1.4</wink.version>
 
 		<!-- plugin versions -->
 		<jetty-maven-plugin.version>9.0.4.v20130625</jetty-maven-plugin.version>
@@ -58,6 +61,13 @@
 			<version>${javax.inject.version}</version>
 		</dependency>
 
+		<!-- commons lang (http://commons.apache.org/lang) -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
 		<!-- spring-framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -71,6 +81,54 @@
 			</exclusions>
 		</dependency>
 
+		<!-- include Wink implementation -->
+		<dependency>
+			<groupId>org.apache.wink</groupId>
+			<artifactId>wink-common</artifactId>
+			<version>${wink.version}</version>
+			<exclusions>
+				<!-- stop ClassCastException: com.sun.xml.bind.v2.runtime.JAXBContextImpl cannot be cast to com.sun.xml.internal.bind.api.JAXBRIContext -->
+				<exclusion>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-impl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wink</groupId>
+			<artifactId>wink-server</artifactId>
+			<version>${wink.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+				<!-- stop ClassCastException: com.sun.xml.bind.v2.runtime.JAXBContextImpl cannot be cast to com.sun.xml.internal.bind.api.JAXBRIContext -->
+				<exclusion>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-impl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wink</groupId>
+			<artifactId>wink-spring-support</artifactId>
+			<version>${wink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wink</groupId>
+			<artifactId>wink-jackson-provider</artifactId>
+			<version>${wink.version}</version>
+		</dependency>
+
 		<!-- spring-mvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -81,13 +139,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
-		</dependency>
-
-		<!-- JSON support -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson-databind.version}</version>
 		</dependency>
 
 		<!-- spring-data + hibernate -->
@@ -145,6 +196,23 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-openid</artifactId>
 			<version>${spring-security.version}</version>
+		</dependency>
+
+		<!-- Spring AOP + AspectJ (http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/aop.html#aop-introduction) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
 		</dependency>
 
 		<!-- logging -->

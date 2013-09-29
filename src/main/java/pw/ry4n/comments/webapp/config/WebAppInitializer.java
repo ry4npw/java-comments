@@ -1,24 +1,39 @@
 package pw.ry4n.comments.webapp.config;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+
+import org.apache.wink.server.internal.servlet.RestServlet;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 @Order(1)
-public class WebAppInitializer extends
-		AbstractAnnotationConfigDispatcherServletInitializer {
-
+/**
+ * Java configuration used in Servlet 3.0 instances over the traditional
+ * "web.xml".
+ * 
+ * @author Ryan Powell
+ */
+public class WebAppInitializer implements WebApplicationInitializer {
 	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { RootConfig.class };
-	}
+	public void onStartup(ServletContext servletContext)
+			throws ServletException {
+		// Create the 'root' Spring application context
+		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
 
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { AppConfig.class };
-	}
+		// find and register all @Configuration classes
+		rootContext.scan("pw.ry4n.comments.webapp.config");
 
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] { "/" };
+		// Manage the lifecycle of the root application context
+		servletContext.addListener(new ContextLoaderListener(rootContext));
+
+		// Wink configuration
+		ServletRegistration.Dynamic winkServlet = servletContext.addServlet(
+				"Wink REST Servlet", new RestServlet());
+		winkServlet.setLoadOnStartup(1);
+		winkServlet.addMapping("/*");
 	}
 }
