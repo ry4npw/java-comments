@@ -26,7 +26,6 @@
 		<spring.version>3.2.4.RELEASE</spring.version>
 		<spring-data-jpa.version>1.4.1.RELEASE</spring-data-jpa.version>
 		<spring-security.version>3.2.0.CI-SNAPSHOT</spring-security.version>
-		<wink.version>1.4</wink.version>
 
 		<!-- plugin versions -->
 		<jetty-maven-plugin.version>9.0.4.v20130625</jetty-maven-plugin.version>
@@ -81,54 +80,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- include Wink implementation -->
-		<dependency>
-			<groupId>org.apache.wink</groupId>
-			<artifactId>wink-common</artifactId>
-			<version>${wink.version}</version>
-			<exclusions>
-				<!-- stop ClassCastException: com.sun.xml.bind.v2.runtime.JAXBContextImpl cannot be cast to com.sun.xml.internal.bind.api.JAXBRIContext -->
-				<exclusion>
-					<groupId>javax.xml.bind</groupId>
-					<artifactId>jaxb-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.xml.bind</groupId>
-					<artifactId>jaxb-impl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wink</groupId>
-			<artifactId>wink-server</artifactId>
-			<version>${wink.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-lang</groupId>
-					<artifactId>commons-lang</artifactId>
-				</exclusion>
-				<!-- stop ClassCastException: com.sun.xml.bind.v2.runtime.JAXBContextImpl cannot be cast to com.sun.xml.internal.bind.api.JAXBRIContext -->
-				<exclusion>
-					<groupId>javax.xml.bind</groupId>
-					<artifactId>jaxb-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.xml.bind</groupId>
-					<artifactId>jaxb-impl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wink</groupId>
-			<artifactId>wink-spring-support</artifactId>
-			<version>${wink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wink</groupId>
-			<artifactId>wink-jackson-provider</artifactId>
-			<version>${wink.version}</version>
-		</dependency>
-
 		<!-- spring-mvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -139,6 +90,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- JSON support -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind.version}</version>
 		</dependency>
 
 		<!-- spring-data + hibernate -->
