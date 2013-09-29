@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,11 +43,11 @@ public class CommentController {
 		return commentRepository.findOne(id);
 	}
 
-	@RequestMapping(value = "/{siteName}/comments/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{siteName}/comments/{id}", method = RequestMethod.PUT, consumes = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void replaceComment(@PathVariable("siteName") String siteName,
 			@PathVariable("id") Long id,
-			@ModelAttribute("comment") Comment comment,
+			@RequestBody Comment comment,
 			HttpServletRequest request) {
 		// TODO make sure authors are the same, or ROLE_ADMIN
 
@@ -76,11 +76,11 @@ public class CommentController {
 						postId);
 	}
 
-	@RequestMapping(value = "/{siteName}/posts/{postId}/comments", method = RequestMethod.POST)
+	@RequestMapping(value = "/{siteName}/posts/{postId}/comments", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void createComment(@PathVariable("siteName") String siteName,
 			@PathVariable("postId") String postId,
-			@ModelAttribute("comment") Comment comment,
+			@RequestBody Comment comment,
 			HttpServletRequest request) {
 		comment.setPostId(postId);
 		comment.setSiteName(siteName);
@@ -99,12 +99,12 @@ public class CommentController {
 						parentCommentId);
 	}
 
-	@RequestMapping(value = "/{siteName}/comments/{commentId}/replies", method = RequestMethod.POST)
+	@RequestMapping(value = "/{siteName}/comments/{commentId}/replies", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void createReply(@PathVariable("siteName") String siteName,
 			@PathVariable("id") Long id,
 			@PathVariable("commentId") Long parentCommentId,
-			@ModelAttribute("comment") Comment comment,
+			@RequestBody Comment comment,
 			HttpServletRequest request) {
 		Comment parent = commentRepository.findOne(parentCommentId);
 		comment.setParent(parent);
