@@ -4,15 +4,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * Core Spring Framework configuration.
+ * 
+ * @author Ryan Powell
+ */
 @Configuration
 @PropertySource({ "classpath:application.properties" })
-@ComponentScan({ "pw.ry4n.comments" })
+@ComponentScan(basePackages = { "pw.ry4n.comments" }, excludeFilters = { @Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
 @EnableAspectJAutoProxy
-@EnableWebMvc
 public class AppConfig {
 	/**
 	 * Allow {@code @Value} property injection.

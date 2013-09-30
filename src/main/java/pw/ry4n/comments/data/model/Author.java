@@ -1,6 +1,7 @@
 package pw.ry4n.comments.data.model;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +32,21 @@ public class Author extends User {
 	private String fullName;
 	private String email;
 	private List<Comment> comments;
+	private Long version;
 
+	/**
+	 * Default constructor
+	 */
+	public Author() {
+		super("unused", "unused", Collections.<GrantedAuthority> emptyList());
+	}
+
+	/**
+	 * Parameterized constructor
+	 * 
+	 * @param username
+	 * @param authorities
+	 */
 	public Author(String username,
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username, "unused", authorities);
@@ -120,5 +136,15 @@ public class Author extends User {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	@Version
+	@XmlTransient
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 }

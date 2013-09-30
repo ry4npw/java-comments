@@ -21,11 +21,11 @@ public class SiteWhitelistAspect {
 			.getLogger(SiteWhitelistAspect.class);
 
 	@Value("${sites.whitelist.enable:false}")
-	private boolean enabled;
-	@Value("${site.whitelist}")
-	private String[] whitelistedSiteArray;
+	protected boolean enabled = false;
+	@Value("${sites.whitelist}")
+	protected String[] whitelistedSiteArray = null;
 
-	private Set<String> whitelist = new HashSet<>();
+	protected Set<String> whitelist = new HashSet<>();
 
 	@PostConstruct
 	public void afterPropertiesSet() {
@@ -40,12 +40,17 @@ public class SiteWhitelistAspect {
 
 	@Before("execution(* pw.ry4n.comments.webapp.controller.CommentController.*(..))")
 	public void beforeMethod(JoinPoint joinPoint) throws Throwable {
+		if (!enabled) {
+			return;
+		}
+
 		Object[] arguments = joinPoint.getArgs();
 
 		if (arguments != null && arguments.length >= 1) {
 			String siteName = arguments[0].toString();
 			if (!whitelist.contains(siteName)) {
-				logger.error("received request for non-whitelisted site: " + siteName);
+				logger.error("received request for non-whitelisted site: "
+						+ siteName);
 				throw new IllegalArgumentException("Site is not registered");
 			}
 		}
